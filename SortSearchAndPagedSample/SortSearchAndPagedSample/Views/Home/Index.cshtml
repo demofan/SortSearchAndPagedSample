@@ -6,47 +6,81 @@
     ViewBag.Title = "Home Page";
 }
 
+<div class="plist">
+    <div class="jumbotron">
+        @using (Html.BeginForm("Index", "Home", FormMethod.Get, new { role = "search", @class = "form-inline" }))
+        {
+            //實際使用時這三個欄位應該改為 Hidder
+            @Html.TextBox("column")
+            @Html.TextBox("order")
+            @Html.TextBox("page")
+            <hr />
+            <div class="input-group">
+                <select name="q" class="form-control">
+                    <option value=""> - 請選擇 - </option>
+                    <option value="0">支出</option>
+                    <option value="1">收入</option>
+                </select>
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit"><i class="fa fa-search"></i> Search</button>
+                </span>
+            </div>
 
-<div class="row">
-    <div class="col-md-12">
-        <table class="table table-bordered table-hover">
-            <tr>
-                <th>
-                    @*利用自行擴充的 SortableFor 來簡化並客制 DisplayName 的效果*@
-                    @*@Html.DisplayNameFor(model => model.Categoryyy)*@
-                    @Html.SortableFor(d => d.Categoryyy, "span")
-                </th>
-                <th>
-                    @*@Html.DisplayNameFor(model => model.Amounttt)*@
-                    @Html.SortableFor(d => d.Amounttt, "span")
-                </th>
-                <th>
-                    @*@Html.DisplayNameFor(model => model.Dateee)*@
-                    @Html.SortableFor(d => d.Dateee, "span")
-                </th>
-            </tr>
-            @foreach (var item in Model.Result)//資料已經被封裝到 Result 內
-            {
+        }
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover">
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Categoryyy)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Amounttt)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Dateee)
-                    </td>
+                    <th>
+                        @*利用自行擴充的 SortableFor 來簡化並客制 DisplayName 的效果*@
+                        @*@Html.DisplayNameFor(model => model.Categoryyy)*@
+                        @Html.SortableFor(d => d.Categoryyy, "span")
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.Amounttt)*@
+                        @Html.SortableFor(d => d.Amounttt, "span")
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.Dateee)*@
+                        @Html.SortableFor(d => d.Dateee, "span")
+                    </th>
                 </tr>
+                @foreach (var item in Model.Result) //資料已經被封裝到 Result 內
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Categoryyy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amounttt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Dateee)
+                </td>
+            </tr>
             }
 
-        </table>
-        <nav>
-            @Html.PagedListPager(Model.Result, d => Url.Action("index", new
-   {
-       page = d
-   }))
-        </nav>
+            </table>
+            <nav>
+                @Html.PagedListPager(Model.Result, d => Url.Action("index", new
+           {
+               q = Model.Keyword,
+               page = d,
+               Model.Column,
+               Model.Order
+           }))
+            </nav>
+        </div>
+
     </div>
-    
 </div>
+@section scripts{
+    <script src="~/Scripts/purl.js"></script>
+    <script src="~/Scripts/TypeScript/demoSortable.js"></script>
+    <script>
+        $(document).ready(function () {
+            var sortable = new SkillTreeSortableSample.Sortable($(".plist"));
+        })
+    </script>
+}
