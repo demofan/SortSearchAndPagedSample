@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
 using SortSearchAndPagedSample.Models;
 
 namespace SortSearchAndPagedSample.Controllers
@@ -16,9 +17,16 @@ namespace SortSearchAndPagedSample.Controllers
             _dbContext = new Model1();
         }
 
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            ViewData.Model = _dbContext.AccountBook.ToList();
+            //分頁套件： Install-Package PagedList.Mvc 
+            var pageIndex = page.HasValue ? page.Value < 1 ? 1 : page.Value : 1;
+            var pageSize = 10;
+
+            //為了範例最簡化，因此直接在 Controller 操作 DB ，實務上請盡量避免
+            ViewData.Model = _dbContext.AccountBook
+                .OrderByDescending(d => d.Dateee) //分頁前需先排序
+                .ToPagedList(pageIndex, pageSize);
             return View();
         }
 
