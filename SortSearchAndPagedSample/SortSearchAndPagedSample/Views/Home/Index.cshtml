@@ -1,6 +1,7 @@
 ﻿@using PagedList
 @using PagedList.Mvc
-@model IEnumerable<SortSearchAndPagedSample.Models.AccountBook>
+@model QueryOption<SortSearchAndPagedSample.Models.AccountBook>
+
 @{
     ViewBag.Title = "Home Page";
 }
@@ -11,16 +12,20 @@
         <table class="table table-bordered table-hover">
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Categoryyy)
+                    @*利用自行擴充的 SortableFor 來簡化並客制 DisplayName 的效果*@
+                    @*@Html.DisplayNameFor(model => model.Categoryyy)*@
+                    @Html.SortableFor(d => d.Categoryyy, "span")
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Amounttt)
+                    @*@Html.DisplayNameFor(model => model.Amounttt)*@
+                    @Html.SortableFor(d => d.Amounttt, "span")
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Dateee)
+                    @*@Html.DisplayNameFor(model => model.Dateee)*@
+                    @Html.SortableFor(d => d.Dateee, "span")
                 </th>
             </tr>
-            @foreach (var item in Model)
+            @foreach (var item in Model.Result)//資料已經被封裝到 Result 內
             {
                 <tr>
                     <td>
@@ -37,7 +42,7 @@
 
         </table>
         <nav>
-            @Html.PagedListPager((IPagedList)Model, d => Url.Action("index", new
+            @Html.PagedListPager(Model.Result, d => Url.Action("index", new
    {
        page = d
    }))
