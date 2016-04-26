@@ -16,4 +16,34 @@
     white-space: normal;
 }
 
+.sortable {
+  padding-right: 15px;
+  position: relative;
+  cursor: pointer;
+  width: 100%;
+  display: block;
+}
+.sortable .asc, .sortable .desc {
+  position: absolute;
+  padding-top: 5px;
+  right: 0;
+  top: 0;
+}
 
+.asc:after, .desc:after {
+  display: block;
+  content: "";
+  border: transparent 5px solid;
+  height: 0;
+  position: relative;
+}
+
+.asc:after {
+  border-top: currentColor 5px solid;
+  top: 2px;
+}
+
+.desc:after {
+  border-bottom: currentColor 5px solid;
+  top: -2px;
+}
