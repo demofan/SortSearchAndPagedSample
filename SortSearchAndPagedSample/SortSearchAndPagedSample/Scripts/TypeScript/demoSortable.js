@@ -5,7 +5,7 @@ var SkillTreeSortableSample;
         Order[Order["Ascending"] = 0] = "Ascending";
         Order[Order["Descending"] = 1] = "Descending";
     })(Order || (Order = {}));
-    var Sortable = (function () {
+    var Sortable = /** @class */ (function () {
         function Sortable(container) {
             this.container = container;
             this.form = this.container.find("form");
